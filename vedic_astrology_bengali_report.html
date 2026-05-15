@@ -1,0 +1,736 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@400;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body, .report-root {
+    background: #ffffff;
+    font-family: 'Hind Siliguri', sans-serif;
+    color: #1a1a2e;
+  }
+
+  .report-root {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 0 40px 0;
+    background: #fff;
+  }
+
+  /* HEADER */
+  .report-header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+    padding: 36px 32px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .report-header::before {
+    content: '☽ ✦ ☉';
+    position: absolute;
+    top: 10px; left: 50%; transform: translateX(-50%);
+    font-size: 18px; color: #f5c518; opacity: 0.5; letter-spacing: 12px;
+  }
+  .report-header h1 {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 28px; font-weight: 700;
+    color: #f5c518;
+    margin-top: 10px;
+    text-shadow: 0 0 20px rgba(245,197,24,0.4);
+  }
+  .report-header .subtitle {
+    font-size: 14px; color: #a0aec0; margin-top: 6px;
+    letter-spacing: 0.5px;
+  }
+  .report-header .birth-info {
+    margin-top: 16px;
+    display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+  }
+  .birth-chip {
+    background: rgba(245,197,24,0.12);
+    border: 1px solid rgba(245,197,24,0.3);
+    border-radius: 20px; padding: 4px 14px;
+    font-size: 13px; color: #f5c518;
+  }
+
+  /* SECTION STYLES */
+  .section { padding: 28px 28px 0; }
+  .section-title {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 20px; font-weight: 700;
+    color: #1a1a2e;
+    border-left: 4px solid #f5c518;
+    padding-left: 12px;
+    margin-bottom: 20px;
+  }
+
+  /* CHART CONTAINER */
+  .chart-area {
+    background: #fffdf0;
+    border: 2px solid #f5c518;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 0 28px 24px;
+  }
+  .chart-area h3 {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 16px; font-weight: 700;
+    color: #7a5c00;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  /* NORTH INDIAN CHART */
+  .ni-chart {
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* PLANET TABLE */
+  .planet-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-bottom: 8px;
+  }
+  .planet-table th {
+    background: #f5c518;
+    color: #1a1a2e;
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12.5px;
+  }
+  .planet-table td {
+    padding: 7px 10px;
+    border-bottom: 1px solid #f0e8c0;
+    vertical-align: top;
+  }
+  .planet-table tr:nth-child(even) td { background: #fffdf0; }
+  .planet-table tr:nth-child(odd) td { background: #ffffff; }
+  .graha-badge {
+    display: inline-block;
+    background: #f5c518;
+    color: #1a1a2e;
+    border-radius: 4px;
+    padding: 1px 7px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  /* INFO GRID */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .info-card {
+    background: #fffdf0;
+    border: 1.5px solid #f5c518;
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .info-card .label {
+    font-size: 11.5px; color: #7a5c00; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .info-card .value {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 16px; font-weight: 700; color: #1a1a2e;
+  }
+  .info-card .sub {
+    font-size: 12px; color: #7a5c00; margin-top: 2px;
+  }
+
+  /* DASHA TABLE */
+  .dasha-block {
+    background: #1a1a2e;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  .dasha-block h4 {
+    font-family: 'Noto Serif Bengali', serif;
+    color: #f5c518; font-size: 15px; margin-bottom: 12px;
+  }
+  .dasha-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 13px; color: #e2e8f0;
+  }
+  .dasha-row:last-child { border-bottom: none; }
+  .dasha-planet {
+    background: #f5c518; color: #1a1a2e;
+    border-radius: 4px; padding: 2px 8px;
+    font-weight: 700; font-size: 12px; min-width: 52px; text-align: center;
+  }
+  .dasha-current {
+    background: #e53e3e; color: #fff;
+    border-radius: 4px; padding: 2px 8px; font-size: 11px; font-weight: 600;
+  }
+
+  /* YEAR FORECAST */
+  .year-block {
+    background: #fff;
+    border: 1.5px solid #e8d87a;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .year-header {
+    background: linear-gradient(90deg, #f5c518 0%, #e8d06a 100%);
+    padding: 10px 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .year-num {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 18px; font-weight: 700; color: #1a1a2e;
+  }
+  .year-label { font-size: 12.5px; color: #5a4000; }
+  .year-body { padding: 16px 18px; }
+  .year-sub {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 14px; font-weight: 600; color: #7a5c00;
+    margin-bottom: 6px; margin-top: 12px;
+  }
+  .year-sub:first-child { margin-top: 0; }
+  .year-body p {
+    font-size: 13.5px; line-height: 1.75; color: #2d3748;
+  }
+
+  /* TAGS */
+  .tag {
+    display: inline-block; border-radius: 4px; padding: 2px 9px;
+    font-size: 11.5px; font-weight: 600; margin: 2px 3px 2px 0;
+  }
+  .tag-good { background: #c6f6d5; color: #22543d; }
+  .tag-warn { background: #fed7d7; color: #742a2a; }
+  .tag-info { background: #bee3f8; color: #2a4365; }
+
+  /* REMEDIES */
+  .remedy-card {
+    background: #fffdf0;
+    border: 1.5px solid #f5c518;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+  }
+  .remedy-card h5 {
+    font-family: 'Noto Serif Bengali', serif;
+    font-size: 15px; font-weight: 700; color: #7a5c00;
+    margin-bottom: 8px;
+  }
+  .remedy-card p { font-size: 13.5px; line-height: 1.7; color: #2d3748; }
+
+  /* MANTRA */
+  .mantra-box {
+    background: #1a1a2e;
+    border-radius: 10px; padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .mantra-box .mantra-title { color: #f5c518; font-size: 13px; margin-bottom: 6px; font-weight: 600; }
+  .mantra-box .mantra-text {
+    font-family: 'Noto Serif Bengali', serif;
+    color: #e2e8f0; font-size: 15px; line-height: 1.7;
+  }
+
+  /* DIVIDER */
+  .divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #f5c518, transparent);
+    margin: 28px 28px 0;
+    opacity: 0.5;
+  }
+
+  /* RATING BAR */
+  .rating-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .rating-label { font-size: 13px; min-width: 110px; color: #4a5568; }
+  .rating-bar { flex: 1; background: #f0e8c0; border-radius: 4px; height: 8px; overflow: hidden; }
+  .rating-fill { height: 100%; border-radius: 4px; background: #f5c518; transition: width 1s; }
+
+  /* FOOTER */
+  .report-footer {
+    margin: 32px 28px 0;
+    background: #1a1a2e;
+    border-radius: 10px; padding: 16px 20px;
+    text-align: center;
+  }
+  .report-footer p { font-size: 12px; color: #718096; line-height: 1.7; }
+  .report-footer .footer-title { color: #f5c518; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+</style>
+
+<div class="report-root">
+
+  <!-- HEADER -->
+  <div class="report-header">
+    <h1>বৈদিক জ্যোতিষ বিশ্লেষণ</h1>
+    <div class="subtitle">সম্পূর্ণ জন্মকুণ্ডলী ও পাঁচ বছরের ভবিষ্যদ্বাণী</div>
+    <div class="birth-info">
+      <span class="birth-chip">২২ ফেব্রুয়ারি ২০০৫</span>
+      <span class="birth-chip">দুপুর ১:০৩</span>
+      <span class="birth-chip">ভালা, পশ্চিমবঙ্গ</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: BIRTH CHART -->
+  <div class="section" style="margin-top:28px;">
+    <div class="section-title">১. জন্মকুণ্ডলী (রাশি চক্র)</div>
+  </div>
+
+  <!-- North Indian Chart SVG -->
+  <div class="chart-area">
+    <h3>🪐 উত্তর ভারতীয় জন্মকুণ্ডলী (লগ্ন চার্ট)</h3>
+    <svg class="ni-chart" width="340" height="340" viewBox="0 0 340 340">
+      <!-- Outer border -->
+      <rect x="5" y="5" width="330" height="330" fill="#fffdf0" stroke="#c8a200" stroke-width="2" rx="4"/>
+      <!-- Diagonals and cross lines -->
+      <line x1="5" y1="5" x2="115" y2="115" stroke="#c8a200" stroke-width="1"/>
+      <line x1="335" y1="5" x2="225" y2="115" stroke="#c8a200" stroke-width="1"/>
+      <line x1="5" y1="335" x2="115" y2="225" stroke="#c8a200" stroke-width="1"/>
+      <line x1="335" y1="335" x2="225" y2="225" stroke="#c8a200" stroke-width="1"/>
+      <line x1="170" y1="5" x2="170" y2="335" stroke="#c8a200" stroke-width="1"/>
+      <line x1="5" y1="170" x2="335" y2="170" stroke="#c8a200" stroke-width="1"/>
+      <rect x="115" y="115" width="110" height="110" fill="#fff9d6" stroke="#c8a200" stroke-width="1"/>
+
+      <!-- HOUSE LABELS & PLANETS (North Indian style) -->
+      <!-- House 1 = Lagna = Gemini (মিথুন) → top-center diamond -->
+      <!-- North Indian: House 1 is always top diamond -->
+      <!-- Lagna: Gemini (মিথুন), House positions calculated -->
+
+      <!-- H1 - Lagna: Gemini (মিথুন) - TOP DIAMOND -->
+      <polygon points="170,5 335,170 170,335 5,170" fill="none"/>
+      <!-- Top triangle H1 -->
+      <text x="170" y="40" text-anchor="middle" fill="#b8860b" font-size="9" font-weight="700">মিথুন</text>
+      <text x="170" y="55" text-anchor="middle" fill="#1a1a2e" font-size="8.5">লগ্ন</text>
+      <text x="158" y="69" text-anchor="middle" fill="#8B0000" font-size="8">রাহু</text>
+      <text x="182" y="69" text-anchor="middle" fill="#8B0000" font-size="8">শনি</text>
+
+      <!-- H2 (কর্কট) - top right -->
+      <text x="272" y="70" text-anchor="middle" fill="#b8860b" font-size="9" font-weight="700">কর্কট</text>
+      <text x="272" y="84" text-anchor="middle" fill="#1a1a2e" font-size="8">২য়</text>
+      <!-- H3 (সিংহ) - right top -->
+      <text x="300" y="150" text-anchor="middle" fill="#b8860b" font-size="9" font-weight="700">সিংহ</text>
+      <text x="300" y="164" text-anchor="middle" fill="#1a1a2e" font-size="8">৩য়</text>
+      <!-- H4 (কন্যা) - right bottom -->
+      <text x="272" y="255" text-anchor="middle" fill="#b8860b" font-size="9" font-weight="700">কন্যা</text>
+      <text x="272" y="269" text-anchor="middle" fill="#1a1a2e" font-size="8">৪র্থ</text>
+      <!-- H5 (তুলা) - bottom right -->
+      <text x="170" y="298" text-anchor="middle" fill="#b8860b" font-size="9" font-weight="700">তুলা</text>
+      <text x="170" y="312" text-anchor="middle" fill="#1a1a2e" font-size="8">৫ম</text>
+      <!-- H6 (বৃশ্চিক) - bottom left -->
+      <text x="68" y="255" text-anchor="middle" fill="#b8860b" font-size="9" font-weight="700">বৃশ্চিক</text>
+      <text x="68" y="269" text-anchor="middle" fill="#1a1a2e" font-size="8">৬ষ্ঠ</text>
+      <!-- H7 (ধনু) - left bottom -->
+      <text x="40" y="150" text-anchor="middle" fill="#b8860b" font-size="9" font-weight="700">ধনু</text>
+      <text x="40" y="164" text-anchor="middle" fill="#1a1a2e" font-size="8">৭ম</text>
+      <text x="40" y="178" text-anchor="middle" fill="#8B0000" font-size="8">সূর্য</text>
+      <!-- H8 (মকর) - left top -->
+      <text x="68" y="70" text-anchor="middle" fill="#b8860b" font-size="9" font-weight="700">মকর</text>
+      <text x="68" y="84" text-anchor="middle" fill="#1a1a2e" font-size="8">৮ম</text>
+      <!-- H9 (কুম্ভ) - center left-ish (in NI chart: middle left box if we had one) -->
+      <!-- Actually in NI chart: 9 houses are the 4 diamonds + 4 triangles + center -->
+      <!-- Center box = H1's opposite = H7 area. Let's label properly. -->
+
+      <!-- Center box labels -->
+      <text x="170" y="150" text-anchor="middle" fill="#b8860b" font-size="9" font-weight="700">মীন</text>
+      <text x="170" y="163" text-anchor="middle" fill="#1a1a2e" font-size="8">১০ম</text>
+      <text x="155" y="176" text-anchor="middle" fill="#8B0000" font-size="8">চাঁদ</text>
+      <text x="183" y="176" text-anchor="middle" fill="#8B0000" font-size="8">মঙ্গল</text>
+      <text x="170" y="190" text-anchor="middle" fill="#8B0000" font-size="8">বৃহস্পতি</text>
+
+      <!-- Remaining houses shown as triangular zones -->
+      <!-- H11 (মেষ) = top-left triangle -->
+      <text x="68" y="138" text-anchor="middle" fill="#b8860b" font-size="9" font-weight="700">কুম্ভ</text>
+      <text x="68" y="152" text-anchor="middle" fill="#1a1a2e" font-size="8">৯ম</text>
+      <!-- H12 zone -->
+      <text x="272" y="138" text-anchor="middle" fill="#b8860b" font-size="9" font-weight="700">মেষ</text>
+      <text x="272" y="152" text-anchor="middle" fill="#1a1a2e" font-size="8">১১শ</text>
+      <text x="272" y="167" text-anchor="middle" fill="#8B0000" font-size="8">শুক্র</text>
+
+      <!-- H12 bottom area -->
+      <text x="170" y="225" text-anchor="middle" fill="#b8860b" font-size="9" font-weight="700">বৃষ</text>
+      <text x="170" y="238" text-anchor="middle" fill="#1a1a2e" font-size="8">১২শ</text>
+      <text x="170" y="252" text-anchor="middle" fill="#8B0000" font-size="8">বুধ+কেতু</text>
+
+      <!-- Lagna mark -->
+      <text x="144" y="92" text-anchor="middle" fill="#c00" font-size="9" font-weight="700">অষ্টমী</text>
+    </svg>
+
+    <div style="margin-top:14px;">
+      <p style="font-size:12px; color:#7a5c00; text-align:center; line-height:1.6;">
+        <strong>গ্রহ সংক্ষেপ:</strong> সূর্য-ধনু | চাঁদ-মীন | মঙ্গল-মীন | বুধ-বৃষ | বৃহস্পতি-মীন | শুক্র-মেষ | শনি-মিথুন | রাহু-মিথুন | কেতু-বৃষ
+      </p>
+    </div>
+  </div>
+
+  <!-- NAVAMSA NOTE -->
+  <div class="chart-area" style="margin-top:0;">
+    <h3>🔮 নবাংশ কুণ্ডলী সারসংক্ষেপ</h3>
+    <p style="font-size:13px; color:#5a4000; line-height:1.75;">
+      নবাংশে <strong>লগ্ন — মকর রাশি</strong> (শনির ক্ষেত্র)। বৃহস্পতি নবাংশে বৃষ রাশিতে, শুক্র মীন রাশিতে (উচ্চ) — এটি বিবাহ ও অর্থ দুটি ক্ষেত্রেই অত্যন্ত শুভ। শনি নবাংশে তুলা রাশিতে (উচ্চ) — দীর্ঘমেয়াদি কর্মজীবনে স্থায়িত্ব নিশ্চিত। সূর্য নবাংশে মীন — আত্মিক উন্নতির সম্ভাবনা উজ্জ্বল।
+    </p>
+  </div>
+
+  <!-- LAGNA / MOON / SUN INFO -->
+  <div class="section">
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="label">🏠 লগ্ন (Ascendant)</div>
+        <div class="value">মিথুন রাশি</div>
+        <div class="sub">বুধ পরিচালিত • বায়ু তত্ত্ব</div>
+      </div>
+      <div class="info-card">
+        <div class="label">🌙 চন্দ্র রাশি</div>
+        <div class="value">মীন রাশি</div>
+        <div class="sub">বৃহস্পতি পরিচালিত • জল তত্ত্ব</div>
+      </div>
+      <div class="info-card">
+        <div class="label">☀️ সূর্য রাশি</div>
+        <div class="value">কুম্ভ রাশি</div>
+        <div class="sub">শনি পরিচালিত • বায়ু তত্ত্ব</div>
+      </div>
+      <div class="info-card">
+        <div class="label">⭐ নক্ষত্র</div>
+        <div class="value">উত্তরভাদ্রপদ</div>
+        <div class="sub">শনি নক্ষত্র • পাদ ৩</div>
+      </div>
+    </div>
+
+    <!-- KEY PLANETS TABLE -->
+    <table class="planet-table">
+      <tr>
+        <th>গ্রহ</th><th>রাশি</th><th>ভাব</th><th>অবস্থা</th><th>ফলাফল</th>
+      </tr>
+      <tr>
+        <td><span class="graha-badge">সূর্য</span></td>
+        <td>কুম্ভ (৩য়)</td><td>৩য় ভাব</td>
+        <td><span class="tag tag-info">শত্রু রাশি</span></td>
+        <td>পরিশ্রম দ্বারা সাফল্য</td>
+      </tr>
+      <tr>
+        <td><span class="graha-badge">চাঁদ</span></td>
+        <td>মীন (১০ম)</td><td>১০ম ভাব</td>
+        <td><span class="tag tag-good">শুভ</span></td>
+        <td>কর্মক্ষেত্রে সুনাম ও যশ</td>
+      </tr>
+      <tr>
+        <td><span class="graha-badge">মঙ্গল</span></td>
+        <td>মীন (১০ম)</td><td>১০ম ভাব</td>
+        <td><span class="tag tag-good">শুভ</span></td>
+        <td>কর্মে সাহস ও নেতৃত্ব</td>
+      </tr>
+      <tr>
+        <td><span class="graha-badge">বুধ</span></td>
+        <td>বৃষ (১২শ)</td><td>১২শ ভাব</td>
+        <td><span class="tag tag-warn">দুর্বল</span></td>
+        <td>গোপন কাজে দক্ষতা</td>
+      </tr>
+      <tr>
+        <td><span class="graha-badge">বৃহস্পতি</span></td>
+        <td>মীন (১০ম)</td><td>১০ম ভাব</td>
+        <td><span class="tag tag-good">স্বরাশি</span></td>
+        <td>কর্মে অসাধারণ উন্নতি</td>
+      </tr>
+      <tr>
+        <td><span class="graha-badge">শুক্র</span></td>
+        <td>মেষ (১১শ)</td><td>১১শ ভাব</td>
+        <td><span class="tag tag-info">নিরপেক্ষ</span></td>
+        <td>লাভ ও মিত্রলাভ</td>
+      </tr>
+      <tr>
+        <td><span class="graha-badge">শনি</span></td>
+        <td>মিথুন (লগ্ন)</td><td>১ম ভাব</td>
+        <td><span class="tag tag-warn">দুর্বল</span></td>
+        <td>দেরিতে সাফল্য, ধৈর্য প্রয়োজন</td>
+      </tr>
+      <tr>
+        <td><span class="graha-badge">রাহু</span></td>
+        <td>মিথুন (লগ্ন)</td><td>১ম ভাব</td>
+        <td><span class="tag tag-warn">সতর্কতা</span></td>
+        <td>অস্বাভাবিক লক্ষ্য, বিদেশযোগ</td>
+      </tr>
+      <tr>
+        <td><span class="graha-badge">কেতু</span></td>
+        <td>বৃষ (১২শ)</td><td>১২শ ভাব</td>
+        <td><span class="tag tag-info">আধ্যাত্মিক</span></td>
+        <td>বৈদেশিক আয়, মোক্ষযোগ</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- DASHA SECTION -->
+  <div class="divider"></div>
+  <div class="section" style="margin-top:28px;">
+    <div class="section-title">২. মহাদশা ও অন্তর্দশা</div>
+    <div class="dasha-block">
+      <h4>📅 দশা চক্র (২০২৪–২০৩০)</h4>
+      <div class="dasha-row">
+        <span class="dasha-planet">রাহু মহাদশা</span>
+        <span>২০১৮ – ২০৩৬ (১৮ বছর)</span>
+      </div>
+      <div class="dasha-row">
+        <span class="dasha-planet" style="background:#e53e3e;color:#fff;">রাহু-রাহু</span>
+        <span>২০১৮ – ২০২১</span>
+      </div>
+      <div class="dasha-row">
+        <span class="dasha-planet" style="background:#e53e3e;color:#fff;">রাহু-বৃহস্পতি</span>
+        <span>২০২১ – ২০২৩</span>
+      </div>
+      <div class="dasha-row">
+        <span class="dasha-planet" style="background:#c05c00;color:#fff;">রাহু-শনি ✦ বর্তমান</span>
+        <span>২০২৩ – ২০২৬ <span class="dasha-current">সক্রিয়</span></span>
+      </div>
+      <div class="dasha-row">
+        <span class="dasha-planet" style="background:#2d6a4f;color:#fff;">রাহু-বুধ</span>
+        <span>২০২৬ – ২০২৮</span>
+      </div>
+      <div class="dasha-row">
+        <span class="dasha-planet" style="background:#2d6a4f;color:#fff;">রাহু-কেতু</span>
+        <span>২০২৮ – ২০২৯</span>
+      </div>
+      <div class="dasha-row">
+        <span class="dasha-planet" style="background:#2d6a4f;color:#fff;">রাহু-শুক্র</span>
+        <span>২০২৯ – ২০৩২</span>
+      </div>
+    </div>
+    <p style="font-size:13px; color:#4a5568; line-height:1.75; margin-bottom:20px;">
+      <strong>বিশ্লেষণ:</strong> বর্তমানে <strong>রাহু মহাদশায় শনি অন্তর্দশা</strong> চলছে (২০২৩–২০২৬)। রাহু লগ্নে এবং শনিও লগ্নে অবস্থিত — এই সংমিশ্রণ কঠিন কিন্তু দৃঢ়প্রতিজ্ঞা ব্যক্তির জন্য অসাধারণ সাফল্য আনতে পারে। ১০ম ভাবে বৃহস্পতি, মঙ্গল, চাঁদের এই ত্রিমূর্তি যোগ জীবনে কর্মগত উন্নতির শক্তিশালী ভিত্তি।
+    </p>
+  </div>
+
+  <!-- 5 YEAR CAREER FORECAST -->
+  <div class="divider"></div>
+  <div class="section" style="margin-top:28px;">
+    <div class="section-title">৩. পাঁচ বছরের কর্মজীবন পূর্বাভাস (২০২৫–২০৩০)</div>
+
+    <!-- Year 2025 -->
+    <div class="year-block">
+      <div class="year-header">
+        <span class="year-num">২০২৫</span>
+        <span class="year-label">রাহু–শনি অন্তর্দশা | বয়স: ২০</span>
+      </div>
+      <div class="year-body">
+        <div class="year-sub">🎯 কর্মজীবন</div>
+        <p>এ বছর পড়াশোনার শেষ পর্যায় বা উচ্চশিক্ষার দিকে মনোযোগ থাকবে। <strong>জানুয়ারি–এপ্রিল:</strong> একাডেমিক চাপ বেশি থাকবে, কিন্তু মনোযোগ স্থির রাখলে ভালো ফলাফল আসবে। <strong>মে–আগস্ট:</strong> ইন্টার্নশিপ বা প্রথম কর্মসংস্থানের সুযোগ আসতে পারে — বিশেষত প্রযুক্তি, মিডিয়া বা শিক্ষা খাতে। <strong>সেপ্টেম্বর–ডিসেম্বর:</strong> একটি গুরুত্বপূর্ণ সিদ্ধান্ত নেওয়ার সময় আসবে — উচ্চতর ডিগ্রি নাকি কর্মসংস্থান, এই দ্বন্দ্ব দেখা দিতে পারে।</p>
+        <div class="year-sub">⚠️ চ্যালেঞ্জ</div>
+        <p>শনির অন্তর্দশায় ধৈর্যের পরীক্ষা হবে। তাড়াহুড়ো করে সিদ্ধান্ত না নেওয়াই ভালো। স্বাস্থ্যের দিকে বিশেষ নজর দিন — মাথাব্যথা বা পিঠের সমস্যা হতে পারে।</p>
+        <div style="margin-top:10px;">
+          <span class="tag tag-good">শুভ মাস: মে, অক্টোবর</span>
+          <span class="tag tag-warn">সতর্ক থাকুন: আগস্ট–সেপ্টেম্বর</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Year 2026 -->
+    <div class="year-block">
+      <div class="year-header">
+        <span class="year-num">২০২৬</span>
+        <span class="year-label">রাহু–বুধ অন্তর্দশা শুরু (মে) | বয়স: ২১</span>
+      </div>
+      <div class="year-body">
+        <div class="year-sub">🚀 কর্মজীবন — উত্থানের বছর</div>
+        <p>এ বছর থেকে <strong>রাহু–বুধ অন্তর্দশা</strong> শুরু হবে (মে ২০২৬ থেকে)। বুধ লগ্নেশ হওয়ায় এটি অত্যন্ত গুরুত্বপূর্ণ পরিবর্তনের সময়। <strong>প্রযুক্তি, যোগাযোগ, লেখা, মিডিয়া, ব্যবসা বা বিশ্লেষণ</strong> — এই ক্ষেত্রে উল্লেখযোগ্য অগ্রগতি হবে। প্রথম চাকরি বা ক্যারিয়ারের প্রথম বড় পদক্ষেপ এ বছর আসার সম্ভাবনা অত্যন্ত বেশি। রাহুর প্রভাবে অপ্রচলিত বা আধুনিক প্রযুক্তিগত কাজে বিশেষ সাফল্য আসবে।</p>
+        <div class="year-sub">💡 বিশেষ সুযোগ</div>
+        <p>বিদেশি সংস্থা বা অনলাইন প্ল্যাটফর্মের মাধ্যমে কাজের সুযোগ খুলবে। নেটওয়ার্কিং এ বছর অত্যন্ত ফলপ্রসূ হবে।</p>
+        <div style="margin-top:10px;">
+          <span class="tag tag-good">শুভ মাস: মে, জুন, নভেম্বর</span>
+          <span class="tag tag-info">বিদেশযোগ: সম্ভাবনা বেশি</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Year 2027 -->
+    <div class="year-block">
+      <div class="year-header">
+        <span class="year-num">২০২৭</span>
+        <span class="year-label">রাহু–বুধ অন্তর্দশা | বয়স: ২২</span>
+      </div>
+      <div class="year-body">
+        <div class="year-sub">🌟 কর্মজীবন — সবচেয়ে গুরুত্বপূর্ণ বছর</div>
+        <p>১০ম ভাবে বৃহস্পতি, মঙ্গল এবং চাঁদের শক্তিশালী যোগ এ বছর পূর্ণ মাত্রায় ফল দেবে। <strong>বৃহস্পতির ট্রানজিট মেষ রাশিতে</strong> (১১শ ভাব) হলে আয় ও লাভের দরজা খুলে যাবে। যদি চাকরি করেন, <strong>পদোন্নতি বা বেতনবৃদ্ধি</strong> প্রায় নিশ্চিত। যদি ব্যবসায় থাকেন, নতুন বিনিয়োগকারী বা ভালো অংশীদার পাবেন। <strong>মার্চ–জুলাই</strong> এই সময়কাল কর্মজীবনে সবচেয়ে শুভ।</p>
+        <div class="year-sub">📌 উপযুক্ত কর্মক্ষেত্র</div>
+        <p>তথ্যপ্রযুক্তি (IT), ডিজিটাল মার্কেটিং, শিক্ষা, গবেষণা, আর্থিক পরামর্শ, লেখা বা সাংবাদিকতা — এই ক্ষেত্রে সাফল্য সবচেয়ে বেশি।</p>
+        <div style="margin-top:10px;">
+          <span class="tag tag-good">শুভ মাস: মার্চ, এপ্রিল, জুলাই</span>
+          <span class="tag tag-good">পদোন্নতির সম্ভাবনা: অত্যন্ত বেশি</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Year 2028 -->
+    <div class="year-block">
+      <div class="year-header">
+        <span class="year-num">২০২৮</span>
+        <span class="year-label">রাহু–কেতু অন্তর্দশা | বয়স: ২৩</span>
+      </div>
+      <div class="year-body">
+        <div class="year-sub">🔄 কর্মজীবন — পরিবর্তনের বছর</div>
+        <p>কেতু ১২শ ভাবে থাকায় এ বছর <strong>বৈদেশিক সুযোগ, গবেষণা বা আধ্যাত্মিক/সৃজনশীল কাজে</strong> মনোযোগ বাড়বে। চাকরি পরিবর্তনের সম্ভাবনা আছে — তবে তা সাধারণত আরও ভালো সুযোগের দিকেই হবে। <strong>বিদেশে পড়াশোনা বা কাজের সুযোগ</strong> এ বছর দেখা দিতে পারে। একটু অস্থিরতা থাকবে, কিন্তু তা সাময়িক।</p>
+        <div class="year-sub">⚠️ সতর্কতা</div>
+        <p>কেতু অন্তর্দশায় সহকর্মীদের সাথে সম্পর্কে সাবধান থাকুন। গোপন শত্রু সক্রিয় হতে পারে। নতুন চুক্তিতে আইনি পরামর্শ নিন।</p>
+        <div style="margin-top:10px;">
+          <span class="tag tag-info">বিদেশযোগ: উচ্চ সম্ভাবনা</span>
+          <span class="tag tag-warn">সতর্কতা: জানুয়ারি, আগস্ট</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Year 2029-2030 -->
+    <div class="year-block">
+      <div class="year-header">
+        <span class="year-num">২০২৯–৩০</span>
+        <span class="year-label">রাহু–শুক্র অন্তর্দশা | বয়স: ২৪–২৫</span>
+      </div>
+      <div class="year-body">
+        <div class="year-sub">💫 কর্মজীবন — প্রতিষ্ঠার বছর</div>
+        <p>শুক্র ১১শ ভাবে থাকায় এ সময় <strong>আয় ও সামাজিক প্রতিষ্ঠা দুটোই একসাথে আসবে</strong>। রাহু–শুক্র মিলিয়ে সৃজনশীল, বিনোদন, ফ্যাশন, শিল্প বা ডিজাইন সম্পর্কিত কাজে অসাধারণ সাফল্য আসতে পারে। নিজের ব্যবসা শুরু করার জন্য এটি অন্যতম শুভ সময়। একটি স্বপ্নের প্রজেক্ট বাস্তবে রূপ নেবে।</p>
+        <div class="year-sub">✨ বিশেষ ভবিষ্যদ্বাণী</div>
+        <p>২০২৯ সালে একটি বড় আর্থিক সুযোগ আসবে যা জীবন বদলে দেওয়ার ক্ষমতা রাখে। সামাজিক পরিচিতি বাড়বে, নেতৃত্বের ভূমিকায় আসার সম্ভাবনা প্রবল।</p>
+        <div style="margin-top:10px;">
+          <span class="tag tag-good">ব্যবসার জন্য সেরা সময়: ২০২৯</span>
+          <span class="tag tag-good">শুভ মাস: ফেব্রুয়ারি, জুন, অক্টোবর</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEALTH FORECAST -->
+  <div class="divider"></div>
+  <div class="section" style="margin-top:28px;">
+    <div class="section-title">৪. অর্থ ও সম্পদ পূর্বাভাস (২০২৫–২০৩০)</div>
+
+    <!-- Rating bars -->
+    <div style="background:#fffdf0; border:1.5px solid #f5c518; border-radius:10px; padding:16px 18px; margin-bottom:20px;">
+      <p style="font-size:13px; font-weight:600; color:#7a5c00; margin-bottom:12px;">বার্ষিক আর্থিক সম্ভাবনা মূল্যায়ন</p>
+      <div class="rating-row"><span class="rating-label">২০২৫</span><div class="rating-bar"><div class="rating-fill" style="width:45%"></div></div><span style="font-size:12px;color:#7a5c00;min-width:30px">৪৫%</span></div>
+      <div class="rating-row"><span class="rating-label">২০২৬</span><div class="rating-bar"><div class="rating-fill" style="width:65%"></div></div><span style="font-size:12px;color:#7a5c00;min-width:30px">৬৫%</span></div>
+      <div class="rating-row"><span class="rating-label">২০২৭</span><div class="rating-bar"><div class="rating-fill" style="width:85%"></div></div><span style="font-size:12px;color:#7a5c00;min-width:30px">৮৫%</span></div>
+      <div class="rating-row"><span class="rating-label">২০২৮</span><div class="rating-bar"><div class="rating-fill" style="width:60%"></div></div><span style="font-size:12px;color:#7a5c00;min-width:30px">৬০%</span></div>
+      <div class="rating-row"><span class="rating-label">২০২৯–৩০</span><div class="rating-bar"><div class="rating-fill" style="width:90%"></div></div><span style="font-size:12px;color:#7a5c00;min-width:30px">৯০%</span></div>
+    </div>
+
+    <table class="planet-table">
+      <tr><th>সময়কাল</th><th>আর্থিক প্রবণতা</th><th>পরামর্শ</th></tr>
+      <tr>
+        <td><strong>২০২৫</strong></td>
+        <td>আয় সীমিত, খরচ নিয়ন্ত্রণ করুন। শনি অন্তর্দশায় বিনিয়োগে সাবধান।</td>
+        <td>সঞ্চয় গড়ুন, ঋণ এড়িয়ে চলুন</td>
+      </tr>
+      <tr>
+        <td><strong>২০২৬</strong></td>
+        <td>আয় বাড়তে শুরু করবে। বুধ অন্তর্দশায় ডিজিটাল আয়ের পথ খুলবে।</td>
+        <td>SIP বা মিউচুয়াল ফান্ডে বিনিয়োগ শুরু করুন</td>
+      </tr>
+      <tr>
+        <td><strong>২০২৭</strong></td>
+        <td>সর্বোচ্চ আয় বৃদ্ধির বছর। বোনাস, পদোন্নতি বা ব্যবসায়িক লাভ।</td>
+        <td>রিয়েল এস্টেট বা শেয়ারে বিনিয়োগ শুভ</td>
+      </tr>
+      <tr>
+        <td><strong>২০২৮</strong></td>
+        <td>কেতু অন্তর্দশায় অপ্রত্যাশিত খরচ হতে পারে। আয় মাঝারি।</td>
+        <td>বিদেশি মুদ্রায় বিনিয়োগ বিবেচনা করুন</td>
+      </tr>
+      <tr>
+        <td><strong>২০২৯–৩০</strong></td>
+        <td>শুক্র অন্তর্দশায় সম্পদ বৃদ্ধি, বিলাসিতা এবং আনন্দের বছর।</td>
+        <td>ব্যবসায় বিনিয়োগ ও সম্পত্তি কেনার শ্রেষ্ঠ সময়</td>
+      </tr>
+    </table>
+
+    <div style="margin-top:16px; background:#fffdf0; border:1.5px solid #f5c518; border-radius:10px; padding:14px 18px;">
+      <p style="font-size:13.5px; color:#5a4000; line-height:1.8;">
+        <strong>💰 বিশেষ আর্থিক যোগ:</strong> জন্মকুণ্ডলীতে ১০ম ভাবে বৃহস্পতি নিজের রাশিতে (মীন) — এটি <strong>"হংস যোগ"</strong> তৈরি করে, যা দীর্ঘমেয়াদে অসাধারণ সম্পদ সঞ্চয়ের ইঙ্গিত দেয়। শুক্র ১১শ ভাবে থাকায় আয়ের একাধিক উৎস থাকবে। ২য় ভাবের অধিপতি চাঁদ ১০ম ভাবে অবস্থান করায় কর্মই সম্পদের মূল উৎস।
+      </p>
+    </div>
+  </div>
+
+  <!-- OTHER LIFE AREAS -->
+  <div class="divider"></div>
+  <div class="section" style="margin-top:28px;">
+    <div class="section-title">৫. অন্যান্য জীবনক্ষেত্র</div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="label">❤️ প্রেম ও সম্পর্ক</div>
+        <div class="value" style="font-size:14px;">২০২৭–২৮</div>
+        <div class="sub">বিবাহ বা গুরুত্বপূর্ণ সম্পর্কের সম্ভাবনা। শুক্র-রাহু প্রেমে তীব্রতা আনবে। নবাংশে শুক্র উচ্চে — দাম্পত্য জীবন সুখের।</div>
+      </div>
+      <div class="info-card">
+        <div class="label">🏥 স্বাস্থ্য</div>
+        <div class="value" style="font-size:14px;">সতর্কতা প্রয়োজন</div>
+        <div class="sub">লগ্নে রাহু-শনি থাকায় মাথাব্যথা, স্নায়ুর সমস্যা বা চর্মরোগ হতে পারে। ২০২৮ সালে বিশেষ সাবধান থাকুন।</div>
+      </div>
+      <div class="info-card">
+        <div class="label">👨‍👩‍👧 পরিবার</div>
+        <div class="value" style="font-size:14px;">মিশ্র ফলাফল</div>
+        <div class="sub">পরিবারের সাথে সম্পর্ক উত্থান-পতনের মধ্যে থাকবে। ২০২৬ থেকে পারিবারিক দায়িত্ব বাড়বে কিন্তু সম্মানও বাড়বে।</div>
+      </div>
+      <div class="info-card">
+        <div class="label">🧘 আধ্যাত্মিকতা</div>
+        <div class="value" style="font-size:14px;">গভীর যোগাযোগ</div>
+        <div class="sub">১২শ ভাবে কেতু-বুধ। ধ্যান, যোগব্যায়াম বা আধ্যাত্মিক পাঠে মনোযোগ জীবনে গভীর শান্তি আনবে।</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REMEDIES -->
+  <div class="divider"></div>
+  <div class="section" style="margin-top:28px;">
+    <div class="section-title">৬. উপায় ও প্রতিকার</div>
+
+    <div class="remedy-card">
+      <h5>💎 রত্নপাথর পরামর্শ</h5>
+      <p>
+        <strong>পান্না (Emerald):</strong> লগ্নেশ বুধের শক্তি বাড়াতে পান্না পরুন — ছোট আঙুলে, সোনার আংটিতে, বুধবার সন্ধ্যায়। ৩–৫ ক্যারেট হলে উপযুক্ত।<br><br>
+        <strong>হলুদ পোখরাজ (Yellow Sapphire):</strong> বৃহস্পতির শক্তি বৃদ্ধির জন্য — তর্জনীতে সোনায়, বৃহস্পতিবার সকালে। কর্ম ও অর্থ উভয় ক্ষেত্রে লাভ।<br><br>
+        <strong>সতর্কতা:</strong> নীলা (Blue Sapphire) পরার আগে অভিজ্ঞ জ্যোতিষীর পরামর্শ নিন — শনি লগ্নে থাকলেও এর প্রভাব পরীক্ষা করে দেখা দরকার।
+      </p>
+    </div>
+
+    <div class="mantra-box">
+      <div class="mantra-title">🕉️ বুধের মন্ত্র (প্রতিদিন ১০৮ বার)</div>
+      <div class="mantra-text">ওঁ বুং বুধায় নমঃ<br><span style="font-size:12px;color:#a0aec0;">Om Bum Budhaya Namah</span></div>
+    </div>
+    <div class="mantra-box">
+      <div class="mantra-title">🕉️ বৃহস্পতির মন্ত্র (বৃহস্পতিবার ১০৮ বার)</div>
+      <div class="mantra-text">ওঁ গ্রাং গ্রীং গ্রৌং সঃ গুরবে নমঃ<br><span style="font-size:12px;color:#a0aec0;">Om Gram Grim Graum Sah Gurave Namah</span></div>
+    </div>
+    <div class="mantra-box">
+      <div class="mantra-title">🕉️ রাহুর মন্ত্র (শনিবার ১০৮ বার)</div>
+      <div class="mantra-text">ওঁ রাং রাহবে নমঃ<br><span style="font-size:12px;color:#a0aec0;">Om Ram Rahave Namah</span></div>
+    </div>
+
+    <div class="remedy-card">
+      <h5>📅 শুভ দিন ও সময়</h5>
+      <p>
+        <strong>সাপ্তাহিক শুভ দিন:</strong> বুধবার ও বৃহস্পতিবার — গুরুত্বপূর্ণ সিদ্ধান্ত এই দিনে নিন।<br><br>
+        <strong>শুভ সংখ্যা:</strong> ৫ (বুধ), ৩ (বৃহস্পতি) — চুক্তি বা নতুন কাজ শুরুর তারিখ হিসেবে বেছে নিন।<br><br>
+        <strong>শুভ রং:</strong> সবুজ (বুধ), হলুদ (বৃহস্পতি) — সাক্ষাৎকার বা গুরুত্বপূর্ণ সভায় পরুন।<br><br>
+        <strong>অনুকূল দিকনির্দেশনা:</strong> উত্তর ও উত্তর-পূর্ব দিকে মুখ রেখে কাজ করুন।
+      </p>
+    </div>
+
+    <div class="remedy-card">
+      <h5>🌿 অন্যান্য উপায়</h5>
+      <p>
+        • প্রতি বুধবার সন্ধ্যায় তুলসী গাছে জল দিন ও প্রদীপ জ্বালান।<br>
+        • শনিবারে কালো তিল, সরষের তেল বা কালো কাপড় দরিদ্রকে দান করুন — শনির প্রতিকূল প্রভাব কমবে।<br>
+        • রাহুর শান্তির জন্য নীল ফুল মহাদেবকে অর্পণ করুন।<br>
+        • নিয়মিত শ্রীমদ্ভগবদ্গীতা পাঠ — বিশেষত ৩য় ও ১০ম অধ্যায়।<br>
+        • গরিব ছাত্রদের বই বা শিক্ষা উপকরণ দান করুন — বৃহস্পতি প্রসন্ন হবেন।
+      </p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="report-footer">
+    <div class="footer-title">⚠️ গুরুত্বপূর্ণ নোট</div>
+    <p>
+      এই বিশ্লেষণ জ্যোতিষ শাস্ত্রের ঐতিহ্যবাহী পদ্ধতিতে তৈরি করা হয়েছে এবং আত্মউন্নয়নের উদ্দেশ্যে প্রদান করা হচ্ছে। গ্রহের প্রভাব সম্ভাবনা নির্দেশ করে, নিয়তি নির্ধারণ করে না। আপনার ব্যক্তিগত পরিশ্রম, ইচ্ছাশক্তি ও সৎ কর্মই চূড়ান্ত ফলাফল নির্ধারণ করে।
+      বড় সিদ্ধান্তের আগে একজন অভিজ্ঞ জ্যোতিষীর সাথে ব্যক্তিগতভাবে পরামর্শ করা উচিত।
+    </p>
+  </div>
+
+</div>
